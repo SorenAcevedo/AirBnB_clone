@@ -3,8 +3,9 @@
 Define unittests for BaseModel class (models/base_model.py)
 """
 import unittest
-from model.base_model import BaseModel
+from models.base_model import BaseModel
 import datetime
+from time import sleep
 
 class TestBaseModel_init(unittest.TestCase):
     """Test instantiation of BaseModel class."""
@@ -20,11 +21,11 @@ class TestBaseModel_init(unittest.TestCase):
 
     def test_type_created_at(self):
         b = BaseModel()
-        self.assertEquals(datetime, type(b.created_at))
+        self.assertEqual(datetime.datetime, type(b.created_at))
 
     def test_type_update_at(self):
         b = BaseModel()
-        self.assertEqual(datetime, type(b))
+        self.assertEqual(datetime.datetime, type(b.updated_at))
 
     # Testing id
     def test_unique_id(self):
@@ -45,4 +46,20 @@ class TestBaseModel_init(unittest.TestCase):
         b2 = BaseModel()
         self.assertLess(b1.updated_at, b2.updated_at)
 
-    #
+
+# class TestBaseModel_str(unittest.TestCase):
+#     """Test __str__ method of BaseModel class"""
+
+    def test_empty_input(self):
+        b = BaseModel()
+        b_str = str(b)
+
+        part1 = "[BaseModel] ("
+        len_part1 = len(part1) + len(b.id) + 2
+        real1 = b_str[: len_part1]
+        exp1 = part1 + b.id + ") "
+        self.assertEqual(real1, exp1)
+
+        real2 = eval(b_str[len_part1:])
+        exp2 = b.__dict__
+        self.assertEqual(real2, exp2)
