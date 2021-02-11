@@ -147,3 +147,64 @@ class TestBaseModel_to_dict(unittest.TestCase):
             'updated_at': '2017-09-28T21:05:54.119572',
             'id': 'b6a6e15c-c67d-4312-9a75-9d084935e579',
             'created_at': '2017-09-28T21:05:54.119427'}
+
+
+class TestBaseModel_kwargs_input(unittest.TestCase):
+    """Test kwargs inputs for __init__ inputs"""
+
+    def test_correct_dict_input(self):
+        b1 = BaseModel()
+        b1.created_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119427)
+        b1.updated_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119572)
+        b1.name = "Holberton"
+        b1.my_number = "89"
+        b1_dict = b1.to_dict()
+
+        b2 = BaseModel(**b1_dict)
+        b2_dict = b2.to_dict()
+
+        self.assertEqual(b1_dict, b2_dict)
+        self.assertEqual(datetime.datetime, type(b2.created_at))
+        self.assertFalse(b1 is b2)
+
+    def test_kwargs_all_inputs(self):
+        c_date = '2017-09-28T21:05:54.119427'
+        u_date = '2017-09-28T21:05:54.119572'
+        id_val = "b6a6e15c-c67d-4312-9a75-9d084935e579"
+        b = BaseModel(id = id_val, created_at=c_date, updated_at= u_date,
+            name = "Holberton")
+        real = b.to_dict()
+        exp = {'__class__': 'BaseModel',
+            'updated_at': '2017-09-28T21:05:54.119572',
+            'id': 'b6a6e15c-c67d-4312-9a75-9d084935e579',
+            'created_at': '2017-09-28T21:05:54.119427',
+            'name': 'Holberton',}
+        self.assertEqual(exp, real)
+
+    def test_kwargs_id_create_at(self):
+        c_date = '2017-09-28T21:05:54.119427'
+        id_val = "b6a6e15c-c67d-4312-9a75-9d084935e579"
+        b = BaseModel(id = id_val, created_at=c_date)
+        b.updated_at= datetime.datetime(2017, 9, 28, 21, 5, 54, 119573)
+        real = b.to_dict()
+        exp = {'__class__': 'BaseModel',
+            'updated_at': '2017-09-28T21:05:54.119573',
+            'id': 'b6a6e15c-c67d-4312-9a75-9d084935e579',
+            'created_at': '2017-09-28T21:05:54.119427'}
+        self.assertEqual(exp, real)
+
+    def test_args_input_unused(self):
+        b = BaseModel("element")
+        self.assertNotIn("element", b.__dict__.values())
+
+    def test_args_kwargs_input(self):
+        c_date = '2017-09-28T21:05:54.119427'
+        u_date = '2017-09-28T21:05:54.119572'
+        id_val = "b6a6e15c-c67d-4312-9a75-9d084935e579"
+        b = BaseModel(34, id=id_val, created_at=c_date, updated_at=u_date)
+        real = b.to_dict()
+        exp = {'__class__': 'BaseModel',
+            'updated_at': '2017-09-28T21:05:54.119572',
+            'id': 'b6a6e15c-c67d-4312-9a75-9d084935e579',
+            'created_at': '2017-09-28T21:05:54.119427'}
+        self.assertEqual(exp, real)
