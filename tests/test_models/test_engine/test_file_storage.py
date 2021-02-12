@@ -104,7 +104,6 @@ class TestFileStorage_save_reload(unittest.TestCase):
 
         storage.reload()
         object_dict = storage.all()
-        print(object_dict)
         self.assertTrue(b_key in object_dict.keys())
         self.assertEqual(object_dict[b_key].name, "Holberton")
 

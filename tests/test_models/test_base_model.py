@@ -4,8 +4,10 @@ Define unittests for BaseModel class (models/base_model.py)
 """
 import unittest
 from models.base_model import BaseModel
+from models import storage
 import datetime
 from time import sleep
+import os
 
 class TestBaseModel_init(unittest.TestCase):
     """Test instantiation of BaseModel class."""
@@ -53,6 +55,13 @@ class TestBaseModel_init(unittest.TestCase):
         b.my_number = 89
         self.assertTrue(hasattr(b, "name") and hasattr(b, "my_number"))
 
+    # Test update storage variable
+    def test_bm_updated_storage(self):
+        b = BaseModel()
+        b_key = "BaseModel." + b.id
+        keys = storage.all().keys()
+        self.assertTrue(b_key in keys)
+
 
 class TestBaseModel_str(unittest.TestCase):
     """Test __str__ method of BaseModel class"""
@@ -91,6 +100,14 @@ class TestBaseModel_str(unittest.TestCase):
 class TestBaseModel_save(unittest.TestCase):
     """Test save method of BaseModel class"""
 
+    @classmethod
+    def clean(self):
+        """Remove 'file.json'"""
+        try:
+            os.remove("file.json")
+        except FileNotFoundError:
+            pass
+
     def test_update_date(self):
         b = BaseModel()
         date1 = b.updated_at
@@ -98,6 +115,16 @@ class TestBaseModel_save(unittest.TestCase):
         b.save()
         date2 = b.updated_at
         self.assertLess(date1, date2)
+
+    def test_save_update_file(self):
+        TestBaseModel_save.clean()
+        b = BaseModel()
+        b.save()
+        b_key = "BaseModel." + b.id
+        with open("file.json", "r") as file:
+            json_text = file.read()
+        self.assertTrue(b_key in json_text)
+        TestBaseModel_save.clean()
 
 class TestBaseModel_to_dict(unittest.TestCase):
     """Test to_dict method of BaseModel class"""
@@ -183,13 +210,13 @@ class TestBaseModel_kwargs_input(unittest.TestCase):
 
     def test_kwargs_id_create_at(self):
         c_date = '2017-09-28T21:05:54.119427'
-        id_val = "b6a6e15c-c67d-4312-9a75-9d084935e579"
+        id_val = "hola"
         b = BaseModel(id = id_val, created_at=c_date)
         b.updated_at= datetime.datetime(2017, 9, 28, 21, 5, 54, 119573)
         real = b.to_dict()
         exp = {'__class__': 'BaseModel',
             'updated_at': '2017-09-28T21:05:54.119573',
-            'id': 'b6a6e15c-c67d-4312-9a75-9d084935e579',
+            'id': 'hola',
             'created_at': '2017-09-28T21:05:54.119427'}
         self.assertEqual(exp, real)
 
