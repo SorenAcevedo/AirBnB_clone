@@ -2,9 +2,14 @@
 """Define the HBNBCommand class."""
 import cmd
 from models.base_model import BaseModel
-from models.user import User
 from models import storage
 from shlex import split
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 def parse(text_args):
     """Parse all argurments for the console"""
@@ -32,7 +37,12 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     __classes = {
         "BaseModel": BaseModel,
-        "User": User
+        "User": User,
+        "Place": Place,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Review": Review
     }
 
     def do_quit(self, arg):
