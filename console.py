@@ -7,6 +7,9 @@ from models import storage
 def parse(text_args):
     """Parse all argurments for the console"""
     l_args = text_args.split(" ")
+    print(l_args)
+    if l_args == ['']:
+        return []
     return l_args[0:]
 
 class HBNBCommand(cmd.Cmd):
@@ -70,6 +73,50 @@ class HBNBCommand(cmd.Cmd):
             obj = d_cls[key_cls]()
             print(obj.id)
             storage.save()
+
+    def do_show(self, arg):
+        """Usage --> show <class> <id>
+        Prints the string representation of an instance
+        based on the class name and id
+
+        Errors:
+        =======
+        ```
+        (hbnb) show
+        ** class name missing **
+        ```
+
+        ```
+        (hbnb) show MyModel 1234-1234
+        ** class doesn't exist **
+        ```
+
+        ```
+        (hbnb) show BaseModel
+        ** instance id missing **
+        ```
+
+        ```
+        (hbnb) show BaseModel 12341234
+        ** no instance found **
+        ```
+        """
+
+        l_args = parse(arg)
+        d_cls = HBNBCommand.__classes
+
+        if len(l_args) == 0:
+            print("** class name missing **")
+        elif l_args[0] not in d_cls.keys():
+            print("** class doesn't exist **")
+        elif len(l_args) == 1:
+            print("** instance id missing **")
+        else:
+            key_obj = l_args[0] + "." + l_args[1]
+            if key_obj not in storage.all().keys():
+                print("** no instance found **")
+            else:
+                print(storage.all()[key_obj])
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
