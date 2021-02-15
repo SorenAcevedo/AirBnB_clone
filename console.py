@@ -3,13 +3,23 @@
 import cmd
 from models.base_model import BaseModel
 from models import storage
+from shlex import split
 
 def parse(text_args):
     """Parse all argurments for the console"""
-    l_args = text_args.split(" ")
-    if l_args == ['']:
-        return []
-    return l_args[0:]
+    return split(text_args)
+
+def cast(text_value):
+    """Cast in int or float a value"""
+
+    if text_value.isnumeric():
+        return int(text_value)
+    else:
+        try:
+            return float(text_value)
+        except:
+            return text_value
+
 
 class HBNBCommand(cmd.Cmd):
     """Defines the HolbertonBnB command interpreter.
@@ -183,10 +193,71 @@ class HBNBCommand(cmd.Cmd):
         if len(l_args) == 0:
             print([str(obj) for obj in val_obj])
         elif l_args[0] not in d_cls.keys():
-            print("1")
             print("** class doesn't exist **")
         else:
             print([str(obj) for obj in val_obj if obj.__class__.__name__ == l_args[0]])
+
+    def do_update(self, arg):
+        """Usage --> update <class name> <id> <attribute name> "<attribute value>"
+        Updates an instance based on the class name and id by adding or updating attribute
+        also update the JSON file.
+
+        Errors:
+        =======
+        ```
+        (hbnb) update
+        ** class name missing **
+        ```
+
+        ```
+        (hbnb) update MyModel 1234-1234
+        ** class doesn't exist **
+        ```
+
+        ```
+        (hbnb) update BaseModel
+        ** instance id missing **
+        ```
+
+        ```
+        (hbnb) update BaseModel 12341234
+        ** no instance found **
+        ```
+
+        ```
+        (hbnb) update BaseModel existing-id
+        ** attribute name missing **
+        ```
+
+        ```
+        (hbnb) update BaseModel existing-id first_name
+        ** value missing **
+        ```
+        """
+
+        l_args = parse(arg)
+        d_cls = HBNBCommand.__classes
+
+        if len(l_args) == 0:
+            print("** class name missing **")
+        elif l_args[0] not in d_cls.keys():
+            print("** class doesn't exist **")
+        elif len(l_args) == 1:
+            print("** instance id missing **")
+        else:
+            key_obj = l_args[0] + "." + l_args[1]
+            if key_obj not in storage.all().keys():
+                print("** no instance found **")
+            elif len(l_args) == 2:
+                print("** attribute name missing **")
+            elif len(l_args) == 3:
+                print("** value missing **")
+            else:
+                obj = storage.all()[key_obj]
+                attr = l_args[2]
+                value = cast(l_args[3])
+                setattr(obj, attr, value)
+                storage.save()
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
