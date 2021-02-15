@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """ Place Class """
+from models.base_model import BaseModel
 
 
-def Place(BaseModel):
+class Place(BaseModel):
     """ Place Class """
     city_id = ""
     user_id = ""
