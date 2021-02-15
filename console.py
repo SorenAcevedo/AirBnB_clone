@@ -11,9 +11,11 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 def parse(text_args):
     """Parse all argurments for the console"""
     return split(text_args)
+
 
 def cast(text_value):
     """Cast in int or float a value"""
@@ -25,6 +27,13 @@ def cast(text_value):
             return float(text_value)
         except:
             return text_value
+
+
+def get_arg(met):
+    """ Get argument inside of ' ( arg) ' """
+
+    idx = met.find('(')
+    return met[idx + 1: -1]
 
 
 class HBNBCommand(cmd.Cmd):
@@ -270,6 +279,59 @@ class HBNBCommand(cmd.Cmd):
                 value = cast(l_args[3])
                 setattr(obj, attr, value)
                 storage.save()
+
+    def do_count(self, arg):
+        """ Usage -> count <class name>
+        Retrieve the number of instances of a class.
+
+        Errors:
+        =======
+        ```
+        (hbnb) pizza.all()
+        ** class doesn't exist **
+        ```
+        """
+
+        l_args = parse(arg)
+        d_cls = HBNBCommand.__classes
+        val_obj = storage.all().values()
+        if l_args[0] not in d_cls.keys():
+            print("** class doesn't exist **")
+        else:
+            print(len([obj for obj in val_obj if obj.__class__.__name__ == l_args[0]]))
+
+    def default(self, arg):
+        """ Usage -> <class name>.action()
+        Command interpreter retrieve all instances of class by using:
+        '<class name>.all()'
+
+        Errors:
+        =======
+        ```
+        (hbnb) pizza.all()
+        ** class doesn't exist **
+        ```
+        """
+
+        if '.' in arg:
+
+            l_args = arg.split('.')
+            d_cls = HBNBCommand.__classes
+
+            if l_args[1] == "all()":
+                HBNBCommand.do_all(self, l_args[0])
+            elif l_args[1] == "count()":
+                HBNBCommand.do_count(self, l_args[0])
+            elif l_args[1][:4] == "show":
+                args = get_arg(l_args[1])
+                HBNBCommand.do_show(self, l_args[0] + " " + args)
+            elif l_args[1][:7] == "destroy":
+                args = get_arg(l_args[1])
+                HBNBCommand.do_destroy(self, l_args[0] + " " + args)
+            else:
+                print("** class doesn't exist **")
+        else:
+            cmd.Cmd.default(self, arg)
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
