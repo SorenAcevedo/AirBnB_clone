@@ -447,3 +447,66 @@ class TestConsole_all(unittest.TestCase):
             for ic in ignore_classes:
                 self.assertNotIn(ic, text_all_1)
                 self.assertNotIn(ic, text_all_2)
+
+class TestConsole_count(unittest.TestCase):
+    """Test count method of HBNBCommand class"""
+
+    @classmethod
+    def setUp(self):
+        try:
+            os.rename("file.json", "original")
+        except:
+            pass
+        FileStorage.__objects = {}
+
+    @classmethod
+    def tearDown(self):
+        try:
+            os.remove("file.json")
+        except:
+            pass
+        try:
+            os.rename("original", "file.json")
+        except:
+            pass
+
+    def test_count_unexisting_class(self):
+        exp = "** class doesn't exist **\n"
+
+        with patch('sys.stdout', new = StringIO()) as output:
+            HBNBCommand().onecmd("MyClass.count()")
+            real = output.getvalue()
+            self.assertEqual(exp, real)
+
+    def test_count(self):
+        k_cls = [
+            "BaseModel",
+            "User",
+            "Place",
+            "State",
+            "City",
+            "Amenity",
+            "Review"
+        ]
+
+        for c_name in k_cls:
+            command = "{}.count()".format(c_name)
+
+            # Count current instances
+            with patch("sys.stdout", new=StringIO()) as output:
+                HBNBCommand().onecmd(command)
+                text_prev_count = output.getvalue().strip()
+                prev_count = int(text_prev_count)
+
+            # Create object
+            c_create = "create " + c_name
+            with patch("sys.stdout", new=StringIO()) as output:
+                HBNBCommand().onecmd(c_create)
+
+            # Count current instances
+            with patch("sys.stdout", new=StringIO()) as output:
+                HBNBCommand().onecmd(command)
+                text_current_count = output.getvalue().strip()
+                current_count = int(text_current_count)
+
+            self.assertGreater(current_count, prev_count)
