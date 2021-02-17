@@ -375,7 +375,10 @@ class HBNBCommand(cmd.Cmd):
                 text_args = get_arg(l_args[1])
                 HBNBCommand.launch_update(self, l_args[0], text_args)
             else:
-                print("** class doesn't exist **")
+                print("*** Unknown syntax: {}.{}".format(
+                    l_args[0],
+                    l_args[1]
+                    ))
         else:
             cmd.Cmd.default(self, arg)
 

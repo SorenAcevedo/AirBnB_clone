@@ -15,9 +15,62 @@ The complete web application will composed by:
 
 ## Console
 It's command interpreter to manipulate data without a visual interface, like in a Shell (perfect for development and debugging)
-<!--
-### Examples
--->
+
+### How to use
+
+- **No interactive mode:**
+
+    ```
+    $ echo "help" | ./console.py
+    (hbnb) 
+    Documented commands (type help <topic>):
+    ========================================
+    EOF  all  count  create  destroy  help  quit  show  update
+
+    (hbnb) 
+    $
+    ```
+
+- **Interactive mode:**
+
+    ```
+    $ ./console.py
+    ```
+
+    On this mode the console displays a prompt wating for input:
+
+    ```
+    $ ./console.py
+    (hbnb) 
+    ```
+
+    To exit enter the command `quit`, or input an EOF signal 
+    (`ctrl-D`).
+
+    ```
+    $ ./console.py
+    (hbnb) quit
+    $
+    ```
+
+    ```
+    $ ./console.py
+    (hbnb) EOF
+    $
+    ```
+
+### Commands
+
+This console supports the folow commands:
+
+- **create:** `create <class>`
+- **show:** `show <class> <id>` or `<class>.show(<id>)`
+- **destroy:** `destroy <class> <id>` or `<class>.destroy(<id>)`
+- **all:** `all` or `all <class>` or `<class>.all()`
+- **count:** `count <class>` or `<class>.count()`
+- **update:** `update <class> <id> <attribute name> "<attribute value>"` or
+`<class>.update(<id>, <attribute name>, <attribute value>)` or `<class>.update(<id>, <attribute dictionary>)`
+
 ---
 
 ## Authors
