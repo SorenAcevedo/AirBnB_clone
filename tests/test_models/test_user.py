@@ -11,13 +11,13 @@ from time import sleep
 import os
 
 
-class TestUser(unittest.TestCase):
+class TestBaseModel_init(unittest.TestCase):
     """Test instantiation of User class."""
 
     # Testing type
     def test_type(self):
         u = User()
-        self.assertEqual(User, type(u))
+        self.assertEqual(User, type(b))
 
     def test_type_id(self):
         u = User()
@@ -53,9 +53,9 @@ class TestUser(unittest.TestCase):
     # Testing new attributes creation
     def test_new_attr(self):
         u = User()
-        u.name = "Holberton"
+        u.first_name = "Holberton"
         u.email = "ejemplo@gato.com"
-        self.assertTrue(hasattr(u, "name") and hasattr(u, "email"))
+        self.assertTrue(hasattr(u, "name") and hasattr(u, "my_number"))
 
     # Test update storage variable
     def test_bm_updated_storage(self):
@@ -63,3 +63,37 @@ class TestUser(unittest.TestCase):
         u_key = "User." + u.id
         keys = storage.all().keys()
         self.assertTrue(u_key in keys)
+
+
+class TestBaseModel_str(unittest.TestCase):
+    """Test __str__ method of User class"""
+
+    def test_empty_input_str(self):
+        u = User()
+        u_str = str(u)
+
+        part1 = "[User] ("
+        len_part1 = len(part1) + len(u.id) + 2
+        real1 = u_str[: len_part1]
+        exp1 = part1 + b.id + ") "
+        self.assertEqual(exp1, real1)
+
+        real2 = eval(u_str[len_part1:])
+        exp2 = u.__dict__
+        self.assertEqual(exp2, real2)
+
+    def test_new_attr_str(self):
+        b = BaseModel()
+        b.name = "Holberton"
+        b.my_number = 89
+        b_str = str(b)
+
+        part1 = "[BaseModel] ("
+        len_part1 = len(part1) + len(b.id) + 2
+        real1 = b_str[: len_part1]
+        exp1 = part1 + b.id + ") "
+        self.assertEqual(exp1, real1)
+
+        real2 = eval(b_str[len_part1:])
+        exp2 = b.__dict__
+        self.assertEqual(exp2, real2)
