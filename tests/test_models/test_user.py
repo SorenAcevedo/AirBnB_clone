@@ -82,18 +82,18 @@ class TestUser_str(unittest.TestCase):
         exp2 = u.__dict__
         self.assertEqual(exp2, real2)
 
-    def test_new_attr_str(self):
-        b = User()
-        b.name = "Holberton"
-        b.my_number = 89
-        b_str = str(b)
+    # def test_new_attr_str(self):
+    #     b = User()
+    #     b.name = "Holberton"
+    #     b.my_number = 89
+    #     b_str = str(b)
 
-        part1 = "[User] ("
-        len_part1 = len(part1) + len(b.id) + 2
-        real1 = b_str[: len_part1]
-        exp1 = part1 + b.id + ") "
-        self.assertEqual(exp1, real1)
+    #     part1 = "[User] ("
+    #     len_part1 = len(part1) + len(b.id) + 2
+    #     real1 = b_str[: len_part1]
+    #     exp1 = part1 + b.id + ") "
+    #     self.assertEqual(exp1, real1)
 
-        real2 = eval(b_str[len_part1:])
-        exp2 = b.__dict__
-        self.assertEqual(exp2, real2)
+    #     real2 = eval(b_str[len_part1:])
+    #     exp2 = b.__dict__
+    #     self.assertEqual(exp2, real2)
