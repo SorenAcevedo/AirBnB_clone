@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Define unittests for BaseModel class (models/base_model.py)
+Define unittests for User class (models/base_model.py)
 """
 import unittest
 from models.base_model import BaseModel
@@ -83,12 +83,12 @@ class TestBaseModel_str(unittest.TestCase):
         self.assertEqual(exp2, real2)
 
     def test_new_attr_str(self):
-        b = BaseModel()
+        b = User()
         b.name = "Holberton"
         b.my_number = 89
         b_str = str(b)
 
-        part1 = "[BaseModel] ("
+        part1 = "[User] ("
         len_part1 = len(part1) + len(b.id) + 2
         real1 = b_str[: len_part1]
         exp1 = part1 + b.id + ") "
