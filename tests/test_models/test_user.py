@@ -75,7 +75,7 @@ class TestBaseModel_str(unittest.TestCase):
         part1 = "[User] ("
         len_part1 = len(part1) + len(u.id) + 2
         real1 = u_str[: len_part1]
-        exp1 = part1 + b.id + ") "
+        exp1 = part1 + u.id + ") "
         self.assertEqual(exp1, real1)
 
         real2 = eval(u_str[len_part1:])
