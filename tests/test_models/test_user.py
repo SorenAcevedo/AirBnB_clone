@@ -14,10 +14,10 @@ import os
 class TestBaseModel_init(unittest.TestCase):
     """Test instantiation of User class."""
 
-    # Testing type
-    def test_type(self):
-        u = User()
-        self.assertEqual(User, type(u))
+    # # Testing type
+    # def test_type(self):
+    #     u = User()
+    #     self.assertEqual(User, type(b))
 
     def test_type_id(self):
         u = User()
@@ -50,12 +50,12 @@ class TestBaseModel_init(unittest.TestCase):
         u2 = User()
         self.assertLess(u1.updated_at, u2.updated_at)
 
-    # Testing new attributes creation
-    def test_new_attr(self):
-        u = User()
-        u.first_name = "Holberton"
-        u.email = "ejemplo@gato.com"
-        self.assertTrue(hasattr(u, "first_name") and hasattr(u, "email"))
+    # # Testing new attributes creation
+    # def test_new_attr(self):
+    #     u = User()
+    #     u.first_name = "Holberton"
+    #     u.email = "ejemplo@gato.com"
+    #     self.assertTrue(hasattr(u, "name") and hasattr(u, "my_number"))
 
     # Test update storage variable
     def test_bm_updated_storage(self):
