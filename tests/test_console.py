@@ -99,6 +99,13 @@ class TestConsole_create(unittest.TestCase):
         except:
             pass
 
+    def test_create_help(self):
+        exp = "Usage --> create <class>"
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("help create")
+            real = output.getvalue().split("\n")[0]
+        self.assertEqual(exp, real)
+
     def test_create_missing_class(self):
         exp = "** class name missing **\n"
         with patch('sys.stdout', new=StringIO()) as output:
@@ -153,6 +160,13 @@ class TestConsole_show(unittest.TestCase):
             os.rename("original", "file.json")
         except:
             pass
+
+    def test_show_help(self):
+        exp = "Usage --> show <class> <id>"
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("help show")
+            real = output.getvalue().split("\n")[0]
+        self.assertEqual(exp, real)
 
     def test_show_missing_class(self):
         exp = "** class name missing **\n"
@@ -263,6 +277,13 @@ class TestConsole_destroy(unittest.TestCase):
         except:
             pass
 
+    def test_destroy_help(self):
+        exp = "Usage --> destroy <class> <id>"
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("help destroy")
+            real = output.getvalue().split("\n")[0]
+        self.assertEqual(exp, real)
+
     def test_destroy_missing_class(self):
         exp = "** class name missing **\n"
         with patch('sys.stdout', new=StringIO()) as output:
@@ -368,6 +389,13 @@ class TestConsole_all(unittest.TestCase):
         except:
             pass
 
+    def test_all_help(self):
+        exp = "Usage --> all <class>"
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("help all")
+            real = output.getvalue().split("\n")[0]
+        self.assertEqual(exp, real)
+
     def test_all_unexisting_class(self):
         exp = "** class doesn't exist **\n"
         with patch('sys.stdout', new=StringIO()) as output:
@@ -470,6 +498,13 @@ class TestConsole_count(unittest.TestCase):
         except:
             pass
 
+    def test_count_help(self):
+        exp = "Usage -> <class name>.count()"
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("help count")
+            real = output.getvalue().split("\n")[0]
+        self.assertEqual(exp, real)
+
     def test_count_unexisting_class(self):
         exp = "** class doesn't exist **\n"
 
@@ -533,6 +568,15 @@ class TestConsole_update(unittest.TestCase):
             os.rename("original", "file.json")
         except:
             pass
+
+    def test_update_help(self):
+        exp_a = "Usage --> update <class name> <id> <attribute name>"
+        exp_b = " \"<attribute value>\""
+        exp = exp_a + exp_b
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("help update")
+            real = output.getvalue().split("\n")[0]
+        self.assertEqual(exp, real)
 
     def test_update_missing_class(self):
         exp = "** class name missing **\n"

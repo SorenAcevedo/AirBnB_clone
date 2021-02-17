@@ -283,7 +283,7 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
 
     def do_count(self, arg):
-        """ Usage -> count <class name>
+        """Usage -> <class name>.count()
         Retrieve the number of instances of a class.
 
         Errors:
