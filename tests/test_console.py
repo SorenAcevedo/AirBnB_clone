@@ -32,14 +32,14 @@ class TestConsole_config(unittest.TestCase):
 
     def test_empty_line(self):
         exp = ""
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("\n")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
     def test_default_unexisting_command(self):
         exp = "*** Unknown syntax: unexisting-command\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("unexisting-command")
             real = output.getvalue()
             self.assertEqual(exp, real)
@@ -50,28 +50,28 @@ class TestConsole_exit(unittest.TestCase):
 
     def test_help_quit(self):
         exp = "Quit command to exit the program\n        \n"
-        with patch('sys.stdout', new = StringIO()) as output: 
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("help quit")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
     def test_quit(self):
         exp = ""
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             self.assertTrue(HBNBCommand().onecmd("quit"))
             real = output.getvalue()
             self.assertEqual(exp, real)
 
     def test_help_EOF(self):
         exp = "Exit with 'EOF' signal.\n        \n"
-        with patch('sys.stdout', new = StringIO()) as output: 
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("help EOF")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
     def test_EOF(self):
         exp = "\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             self.assertTrue(HBNBCommand().onecmd("EOF"))
             real = output.getvalue()
             self.assertEqual(exp, real)
@@ -101,14 +101,14 @@ class TestConsole_create(unittest.TestCase):
 
     def test_create_missing_class(self):
         exp = "** class name missing **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("create")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
     def test_create_unexisting_class(self):
         exp = "** class doesn't exist **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("create MyClass")
             real = output.getvalue()
             self.assertEqual(exp, real)
@@ -156,43 +156,43 @@ class TestConsole_show(unittest.TestCase):
 
     def test_show_missing_class(self):
         exp = "** class name missing **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("show")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
     def test_show_unexisting_class(self):
         exp = "** class doesn't exist **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("show MyClass")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("MyClass.show(1)")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
     def test_show_missing_instance(self):
         exp = "** instance id missing **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("show BaseModel")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("BaseModel.show()")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
     def test_show_unexisting_instance(self):
         exp = "** no instance found **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("show BaseModel unexisting_id")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("BaseModel.show(unexisting_id)")
             real = output.getvalue()
             self.assertEqual(exp, real)
@@ -240,6 +240,7 @@ class TestConsole_show(unittest.TestCase):
 
                 self.assertEqual(exp, real)
 
+
 class TestConsole_destroy(unittest.TestCase):
     """Test destroy method of HBNBCommand class"""
 
@@ -264,48 +265,46 @@ class TestConsole_destroy(unittest.TestCase):
 
     def test_destroy_missing_class(self):
         exp = "** class name missing **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("destroy")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
     def test_destroy_unexisting_class(self):
         exp = "** class doesn't exist **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("destroy MyClass")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("MyClass.destroy(1)")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
-
     def test_destroy_missing_instance(self):
         exp = "** instance id missing **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("destroy BaseModel")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("BaseModel.destroy()")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
     def test_destroy_unexisting_instance(self):
         exp = "** no instance found **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("destroy BaseModel unexisting_id")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("BaseModel.destroy(unexisting_id)")
             real = output.getvalue()
             self.assertEqual(exp, real)
-
 
     def test_destroy(self):
         k_cls = [
@@ -371,12 +370,12 @@ class TestConsole_all(unittest.TestCase):
 
     def test_all_unexisting_class(self):
         exp = "** class doesn't exist **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("all MyClass")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("MyClass.all()")
             real = output.getvalue()
             self.assertEqual(exp, real)
@@ -448,6 +447,7 @@ class TestConsole_all(unittest.TestCase):
                 self.assertNotIn(ic, text_all_1)
                 self.assertNotIn(ic, text_all_2)
 
+
 class TestConsole_count(unittest.TestCase):
     """Test count method of HBNBCommand class"""
 
@@ -473,7 +473,7 @@ class TestConsole_count(unittest.TestCase):
     def test_count_unexisting_class(self):
         exp = "** class doesn't exist **\n"
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("MyClass.count()")
             real = output.getvalue()
             self.assertEqual(exp, real)
@@ -511,6 +511,7 @@ class TestConsole_count(unittest.TestCase):
 
             self.assertGreater(current_count, prev_count)
 
+
 class TestConsole_update(unittest.TestCase):
     """Test count method of HBNBCommand class"""
 
@@ -535,44 +536,43 @@ class TestConsole_update(unittest.TestCase):
 
     def test_update_missing_class(self):
         exp = "** class name missing **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("update")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
     def test_update_unexisting_class(self):
         exp = "** class doesn't exist **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("update MyClass")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("MyClass.update(1, attr, value)")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
-
     def test_update_missing_instance(self):
         exp = "** instance id missing **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("update BaseModel")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("BaseModel.update()")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
     def test_update_unexisting_instance(self):
         exp = "** no instance found **\n"
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("update BaseModel unexisting_id")
             real = output.getvalue()
             self.assertEqual(exp, real)
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("BaseModel.update(unexisting_id)")
             real = output.getvalue()
             self.assertEqual(exp, real)
@@ -586,12 +586,12 @@ class TestConsole_update(unittest.TestCase):
             HBNBCommand().onecmd(c_create)
             obj_id = output.getvalue().strip()
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("update BaseModel {}".format(obj_id))
             real = output.getvalue()
             self.assertEqual(exp, real)
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("BaseModel.update({})".format(obj_id))
             real = output.getvalue()
             self.assertEqual(exp, real)
@@ -605,12 +605,12 @@ class TestConsole_update(unittest.TestCase):
             HBNBCommand().onecmd(c_create)
             obj_id = output.getvalue().strip()
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("update BaseModel {} attr".format(obj_id))
             real = output.getvalue()
             self.assertEqual(exp, real)
 
-        with patch('sys.stdout', new = StringIO()) as output:
+        with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd("BaseModel.update({}, attr)".format(obj_id))
             real = output.getvalue()
             self.assertEqual(exp, real)
@@ -635,7 +635,11 @@ class TestConsole_update(unittest.TestCase):
                 obj_key = "{}.{}".format(c_name, obj_id)
 
             # Test space notation
-            command = "update {} {} {} {}".format(c_name, obj_id, "space", '"value_sapace"' )
+            command = "update {} {} {} {}".format(
+                c_name,
+                obj_id,
+                "space",
+                '"value_sapace"')
             with patch("sys.stdout", new=StringIO()) as output:
                 HBNBCommand().onecmd(command)
 
@@ -646,12 +650,16 @@ class TestConsole_update(unittest.TestCase):
 
             self.assertIn("space", text_output)
 
-            ## Test string cast
+            # Test string cast
             value = storage.all()[obj_key].to_dict()["space"]
             self.assertEqual(str, type(value))
 
         # Test dot notation simple input
-            command = "{}.update(\"{}\", {}, {})".format(c_name, obj_id, '"dot"', '"1.3"')
+            command = "{}.update(\"{}\", {}, {})".format(
+                c_name,
+                obj_id,
+                '"dot"',
+                '"1.3"')
             with patch("sys.stdout", new=StringIO()) as output:
                 HBNBCommand().onecmd(command)
 
@@ -662,7 +670,7 @@ class TestConsole_update(unittest.TestCase):
 
             self.assertIn("dot", text_output)
 
-            ## Test float cast
+            # Test float cast
             value = storage.all()[obj_key].to_dict()["dot"]
             self.assertEqual(float, type(value))
 
@@ -682,6 +690,6 @@ class TestConsole_update(unittest.TestCase):
             obj_dict = storage.all()[obj_key].to_dict()
             self.assertEqual(2.5, obj_dict["dot"])
 
-            ## Test int cast
+            # Test int cast
             value = obj_dict["dict"]
             self.assertEqual(int, type(value))

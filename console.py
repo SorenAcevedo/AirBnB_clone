@@ -35,6 +35,7 @@ def get_arg(met):
     idx = met.find('(')
     return met[idx + 1: -1]
 
+
 class HBNBCommand(cmd.Cmd):
     """Defines the HolbertonBnB command interpreter.
     Attributes:
@@ -215,12 +216,14 @@ class HBNBCommand(cmd.Cmd):
         elif l_args[0] not in d_cls.keys():
             print("** class doesn't exist **")
         else:
-            print([str(obj) for obj in val_obj if obj.__class__.__name__ == l_args[0]])
+            def flt(x):
+                return x.__class__.__name__ == l_args[0]
+            print([str(obj) for obj in val_obj if flt(obj)])
 
     def do_update(self, arg):
         """Usage --> update <class name> <id> <attribute name> "<attribute value>"
-        Updates an instance based on the class name and id by adding or updating attribute
-        also update the JSON file.
+        Updates an instance based on the class name and id by adding
+        or updating attribute also update the JSON file.
 
         Errors:
         =======
@@ -297,7 +300,9 @@ class HBNBCommand(cmd.Cmd):
         if l_args[0] not in d_cls.keys():
             print("** class doesn't exist **")
         else:
-            print(len([obj for obj in val_obj if obj.__class__.__name__ == l_args[0]]))
+            def flt(x):
+                return x.__class__.__name__ == l_args[0]
+            print(len([obj for obj in val_obj if flt]))
 
     def launch_update(self, class_name, text_args):
         """Parsing the arguments and lauch the update command"""
@@ -321,7 +326,8 @@ class HBNBCommand(cmd.Cmd):
                 if all(": " in item for item in l_items):
                     for item in l_items:
                         attr, value = item.split(": ")
-                        args = "{} {} {} {}".format(class_name, obj_id, attr, value)
+                        t_args = (class_name, obj_id, attr, value)
+                        args = "{} {} {} {}".format(*t_args)
                         HBNBCommand.do_update(self, args)
                     return
 
@@ -332,7 +338,11 @@ class HBNBCommand(cmd.Cmd):
                 return
 
             l_args_attr_val = l_args[1].split(", ")
-            args = "{} {} {} {}".format(class_name, obj_id, l_args_attr_val[0], l_args_attr_val[1])
+            t_args = (
+                class_name,
+                obj_id, l_args_attr_val[0],
+                l_args_attr_val[1])
+            args = "{} {} {} {}".format(*t_args)
             HBNBCommand.do_update(self, args)
 
     def default(self, arg):
