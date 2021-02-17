@@ -11,13 +11,13 @@ from time import sleep
 import os
 
 
-class TestUser_init(unittest.TestCase):
-    """Test instantiat  ion of User class."""
+class TestBaseModel_init(unittest.TestCase):
+    """Test instantiation of User class."""
 
     # Testing type
     def test_type(self):
         u = User()
-        self.assertEqual(User, type(u))
+        self.assertEqual(User, type(b))
 
     def test_type_id(self):
         u = User()
@@ -55,7 +55,7 @@ class TestUser_init(unittest.TestCase):
         u = User()
         u.first_name = "Holberton"
         u.email = "ejemplo@gato.com"
-        self.assertTrue(hasattr(u, "email") and hasattr(u, "first_name"))
+        self.assertTrue(hasattr(u, "name") and hasattr(u, "my_number"))
 
     # Test update storage variable
     def test_bm_updated_storage(self):
@@ -65,7 +65,7 @@ class TestUser_init(unittest.TestCase):
         self.assertTrue(u_key in keys)
 
 
-class TestUser_str(unittest.TestCase):
+class TestBaseModel_str(unittest.TestCase):
     """Test __str__ method of User class"""
 
     def test_empty_input_str(self):
@@ -75,7 +75,7 @@ class TestUser_str(unittest.TestCase):
         part1 = "[User] ("
         len_part1 = len(part1) + len(u.id) + 2
         real1 = u_str[: len_part1]
-        exp1 = part1 + u.id + ") "
+        exp1 = part1 + b.id + ") "
         self.assertEqual(exp1, real1)
 
         real2 = eval(u_str[len_part1:])
@@ -83,17 +83,47 @@ class TestUser_str(unittest.TestCase):
         self.assertEqual(exp2, real2)
 
     def test_new_attr_str(self):
-        u = User()
-        u.name = "Holberton"
-        u.my_number = 89
-        u_str = str(u)
+        b = BaseModel()
+        b.name = "Holberton"
+        b.my_number = 89
+        b_str = str(b)
 
-        part1 = "[User] ("
-        len_part1 = len(part1) + len(u.id) + 2
-        real1 = u_str[: len_part1]
-        exp1 = part1 + u.id + ") "
+        part1 = "[BaseModel] ("
+        len_part1 = len(part1) + len(b.id) + 2
+        real1 = b_str[: len_part1]
+        exp1 = part1 + b.id + ") "
         self.assertEqual(exp1, real1)
 
-        real2 = eval(u_str[len_part1:])
-        exp2 = u.__dict__
+        real2 = eval(b_str[len_part1:])
+        exp2 = b.__dict__
         self.assertEqual(exp2, real2)
+
+
+class TestBaseModel_save(unittest.TestCase):
+    """Test save method of BaseModel class"""
+
+    @classmethod
+    def clean(self):
+        """Remove 'file.json'"""
+        try:
+            os.remove("file.json")
+        except FileNotFoundError:
+            pass
+
+    def test_update_date(self):
+        b = BaseModel()
+        date1 = b.updated_at
+        sleep(0.02)
+        b.save()
+        date2 = b.updated_at
+        self.assertLess(date1, date2)
+
+    def test_save_update_file(self):
+        TestBaseModel_save.clean()
+        b = BaseModel()
+        b.save()
+        b_key = "BaseModel." + b.id
+        with open("file.json", "r") as file:
+            json_text = file.read()
+        self.assertTrue(b_key in json_text)
+        TestBaseModel_save.clean()
