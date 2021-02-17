@@ -73,14 +73,14 @@ class TestFileStorage_save_reload(unittest.TestCase):
         u_date = '2017-09-28T21:05:54.119572'
         id_val = "b_save"
 
-        b = BaseModel(id = id_val, created_at=c_date, updated_at= u_date,)
+        b = BaseModel(id=id_val, created_at=c_date, updated_at=u_date,)
         storage.new(b)
         storage.save()
 
         objects_dict = storage.all()
         keys = objects_dict.keys()
         b_key = "BaseModel." + b.id
-        b_dict = b.to_dict() 
+        b_dict = b.to_dict()
 
         with open("file.json", "r") as file:
             json_text = file.read()
@@ -93,7 +93,8 @@ class TestFileStorage_save_reload(unittest.TestCase):
     def test_reload(self):
         TestFileStorage_save_reload.clean()
         b_key = "BaseModel.b_reaload"
-        b_dict = {'__class__': 'BaseModel',
+        b_dict = {
+            '__class__': 'BaseModel',
             'id': 'b_reaload',
             'name': "Holberton"}
 

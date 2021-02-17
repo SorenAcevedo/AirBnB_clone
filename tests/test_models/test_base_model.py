@@ -9,6 +9,7 @@ import datetime
 from time import sleep
 import os
 
+
 class TestBaseModel_init(unittest.TestCase):
     """Test instantiation of BaseModel class."""
 
@@ -16,7 +17,7 @@ class TestBaseModel_init(unittest.TestCase):
     def test_type(self):
         b = BaseModel()
         self.assertEqual(BaseModel, type(b))
-    
+
     def test_type_id(self):
         b = BaseModel()
         self.assertEqual(str, type(b.id))
@@ -126,6 +127,7 @@ class TestBaseModel_save(unittest.TestCase):
         self.assertTrue(b_key in json_text)
         TestBaseModel_save.clean()
 
+
 class TestBaseModel_to_dict(unittest.TestCase):
     """Test to_dict method of BaseModel class"""
 
@@ -156,7 +158,8 @@ class TestBaseModel_to_dict(unittest.TestCase):
         b.created_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119427)
         b.updated_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119572)
         real = b.to_dict()
-        exp = {'__class__': 'BaseModel',
+        exp = {
+            '__class__': 'BaseModel',
             'updated_at': '2017-09-28T21:05:54.119572',
             'id': 'b6a6e15c-c67d-4312-9a75-9d084935e579',
             'created_at': '2017-09-28T21:05:54.119427'}
@@ -168,7 +171,8 @@ class TestBaseModel_to_dict(unittest.TestCase):
         b.name = "Holberton"
         b.my_number = "89"
         real = b.to_dict()
-        exp = {'my_number': 89,
+        exp = {
+            'my_number': 89,
             'name': 'Holberton',
             '__class__': 'BaseModel',
             'updated_at': '2017-09-28T21:05:54.119572',
@@ -198,23 +202,28 @@ class TestBaseModel_kwargs_input(unittest.TestCase):
         c_date = '2017-09-28T21:05:54.119427'
         u_date = '2017-09-28T21:05:54.119572'
         id_val = "b6a6e15c-c67d-4312-9a75-9d084935e579"
-        b = BaseModel(id = id_val, created_at=c_date, updated_at= u_date,
-            name = "Holberton")
+        b = BaseModel(
+            id=id_val,
+            created_at=c_date,
+            updated_at=u_date,
+            name="Holberton")
         real = b.to_dict()
-        exp = {'__class__': 'BaseModel',
+        exp = {
+            '__class__': 'BaseModel',
             'updated_at': '2017-09-28T21:05:54.119572',
             'id': 'b6a6e15c-c67d-4312-9a75-9d084935e579',
             'created_at': '2017-09-28T21:05:54.119427',
-            'name': 'Holberton',}
+            'name': 'Holberton'}
         self.assertEqual(exp, real)
 
     def test_kwargs_id_create_at(self):
         c_date = '2017-09-28T21:05:54.119427'
         id_val = "hola"
-        b = BaseModel(id = id_val, created_at=c_date)
-        b.updated_at= datetime.datetime(2017, 9, 28, 21, 5, 54, 119573)
+        b = BaseModel(id=id_val, created_at=c_date)
+        b.updated_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119573)
         real = b.to_dict()
-        exp = {'__class__': 'BaseModel',
+        exp = {
+            '__class__': 'BaseModel',
             'updated_at': '2017-09-28T21:05:54.119573',
             'id': 'hola',
             'created_at': '2017-09-28T21:05:54.119427'}
@@ -230,7 +239,8 @@ class TestBaseModel_kwargs_input(unittest.TestCase):
         id_val = "b6a6e15c-c67d-4312-9a75-9d084935e579"
         b = BaseModel(34, id=id_val, created_at=c_date, updated_at=u_date)
         real = b.to_dict()
-        exp = {'__class__': 'BaseModel',
+        exp = {
+            '__class__': 'BaseModel',
             'updated_at': '2017-09-28T21:05:54.119572',
             'id': 'b6a6e15c-c67d-4312-9a75-9d084935e579',
             'created_at': '2017-09-28T21:05:54.119427'}
