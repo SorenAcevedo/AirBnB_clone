@@ -19,7 +19,7 @@ class TestAmenity(unittest.TestCase):
         a = Amenity()
         self.assertEqual(Amenity, type(a))
 
-    def test_type_public_attr():
+    def test_type_public_attr(self):
         a = Amenity()
         self.assertEqual(str, type(a.name))
 
