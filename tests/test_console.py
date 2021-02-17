@@ -510,3 +510,178 @@ class TestConsole_count(unittest.TestCase):
                 current_count = int(text_current_count)
 
             self.assertGreater(current_count, prev_count)
+
+class TestConsole_update(unittest.TestCase):
+    """Test count method of HBNBCommand class"""
+
+    @classmethod
+    def setUp(self):
+        try:
+            os.rename("file.json", "original")
+        except:
+            pass
+        FileStorage.__objects = {}
+
+    @classmethod
+    def tearDown(self):
+        try:
+            os.remove("file.json")
+        except:
+            pass
+        try:
+            os.rename("original", "file.json")
+        except:
+            pass
+
+    def test_update_missing_class(self):
+        exp = "** class name missing **\n"
+        with patch('sys.stdout', new = StringIO()) as output:
+            HBNBCommand().onecmd("update")
+            real = output.getvalue()
+            self.assertEqual(exp, real)
+
+    def test_update_unexisting_class(self):
+        exp = "** class doesn't exist **\n"
+        with patch('sys.stdout', new = StringIO()) as output:
+            HBNBCommand().onecmd("update MyClass")
+            real = output.getvalue()
+            self.assertEqual(exp, real)
+
+        with patch('sys.stdout', new = StringIO()) as output:
+            HBNBCommand().onecmd("MyClass.update(1, attr, value)")
+            real = output.getvalue()
+            self.assertEqual(exp, real)
+
+
+    def test_update_missing_instance(self):
+        exp = "** instance id missing **\n"
+        with patch('sys.stdout', new = StringIO()) as output:
+            HBNBCommand().onecmd("update BaseModel")
+            real = output.getvalue()
+            self.assertEqual(exp, real)
+
+        with patch('sys.stdout', new = StringIO()) as output:
+            HBNBCommand().onecmd("BaseModel.update()")
+            real = output.getvalue()
+            self.assertEqual(exp, real)
+
+    def test_update_unexisting_instance(self):
+        exp = "** no instance found **\n"
+        with patch('sys.stdout', new = StringIO()) as output:
+            HBNBCommand().onecmd("update BaseModel unexisting_id")
+            real = output.getvalue()
+            self.assertEqual(exp, real)
+
+        with patch('sys.stdout', new = StringIO()) as output:
+            HBNBCommand().onecmd("BaseModel.update(unexisting_id)")
+            real = output.getvalue()
+            self.assertEqual(exp, real)
+
+    def test_update_unexisting_attribute(self):
+        exp = "** attribute name missing **\n"
+
+        # Create object
+        c_create = "create BaseModel"
+        with patch("sys.stdout", new=StringIO()) as output:
+            HBNBCommand().onecmd(c_create)
+            obj_id = output.getvalue().strip()
+
+        with patch('sys.stdout', new = StringIO()) as output:
+            HBNBCommand().onecmd("update BaseModel {}".format(obj_id))
+            real = output.getvalue()
+            self.assertEqual(exp, real)
+
+        with patch('sys.stdout', new = StringIO()) as output:
+            HBNBCommand().onecmd("BaseModel.update({})".format(obj_id))
+            real = output.getvalue()
+            self.assertEqual(exp, real)
+
+    def test_update_missing_value(self):
+        exp = "** value missing **\n"
+
+        # Create object
+        c_create = "create BaseModel"
+        with patch("sys.stdout", new=StringIO()) as output:
+            HBNBCommand().onecmd(c_create)
+            obj_id = output.getvalue().strip()
+
+        with patch('sys.stdout', new = StringIO()) as output:
+            HBNBCommand().onecmd("update BaseModel {} attr".format(obj_id))
+            real = output.getvalue()
+            self.assertEqual(exp, real)
+
+        with patch('sys.stdout', new = StringIO()) as output:
+            HBNBCommand().onecmd("BaseModel.update({}, attr)".format(obj_id))
+            real = output.getvalue()
+            self.assertEqual(exp, real)
+
+    def test_update(self):
+        k_cls = [
+            "BaseModel",
+            "User",
+            "Place",
+            "State",
+            "City",
+            "Amenity",
+            "Review"
+        ]
+
+        for c_name in k_cls:
+            # Create object
+            c_create = "create " + c_name
+            with patch("sys.stdout", new=StringIO()) as output:
+                HBNBCommand().onecmd(c_create)
+                obj_id = output.getvalue().strip()
+                obj_key = "{}.{}".format(c_name, obj_id)
+
+            # Test space notation
+            command = "update {} {} {} {}".format(c_name, obj_id, "space", '"value_sapace"' )
+            with patch("sys.stdout", new=StringIO()) as output:
+                HBNBCommand().onecmd(command)
+
+            c_show = command = "show {} {}".format(c_name, obj_id)
+            with patch("sys.stdout", new=StringIO()) as output:
+                HBNBCommand().onecmd(command)
+                text_output = output.getvalue().strip()
+
+            self.assertIn("space", text_output)
+
+            ## Test string cast
+            value = storage.all()[obj_key].to_dict()["space"]
+            self.assertEqual(str, type(value))
+
+        # Test dot notation simple input
+            command = "{}.update(\"{}\", {}, {})".format(c_name, obj_id, '"dot"', '"1.3"')
+            with patch("sys.stdout", new=StringIO()) as output:
+                HBNBCommand().onecmd(command)
+
+            c_show = command = "show {} {}".format(c_name, obj_id)
+            with patch("sys.stdout", new=StringIO()) as output:
+                HBNBCommand().onecmd(command)
+                text_output = output.getvalue().strip()
+
+            self.assertIn("dot", text_output)
+
+            ## Test float cast
+            value = storage.all()[obj_key].to_dict()["dot"]
+            self.assertEqual(float, type(value))
+
+            # Test dot notation dictionary input
+            d_attr = {"dot": 2.5, "dict": 10}
+            command = "{}.update({}, {})".format(c_name, obj_id, d_attr)
+            with patch("sys.stdout", new=StringIO()) as output:
+                HBNBCommand().onecmd(command)
+
+            c_show = command = "show {} {}".format(c_name, obj_id)
+            with patch("sys.stdout", new=StringIO()) as output:
+                HBNBCommand().onecmd(command)
+                text_output = output.getvalue().strip()
+
+            self.assertIn("dict", text_output)
+
+            obj_dict = storage.all()[obj_key].to_dict()
+            self.assertEqual(2.5, obj_dict["dot"])
+
+            ## Test int cast
+            value = obj_dict["dict"]
+            self.assertEqual(int, type(value))

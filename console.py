@@ -35,7 +35,6 @@ def get_arg(met):
     idx = met.find('(')
     return met[idx + 1: -1]
 
-
 class HBNBCommand(cmd.Cmd):
     """Defines the HolbertonBnB command interpreter.
     Attributes:
@@ -300,6 +299,42 @@ class HBNBCommand(cmd.Cmd):
         else:
             print(len([obj for obj in val_obj if obj.__class__.__name__ == l_args[0]]))
 
+    def launch_update(self, class_name, text_args):
+        """Parsing the arguments and lauch the update command"""
+
+        if text_args == "":
+            args = "{}".format(class_name)
+            return HBNBCommand.do_update(self, args)
+        else:
+            l_args = text_args.split(", ", 1)
+            len_args = len(l_args)
+
+        if len_args == 1:
+            args = "{} {}".format(class_name, l_args[0])
+            return HBNBCommand.do_update(self, args)
+        else:
+            obj_id = l_args[0]
+            # Dictionary input
+            if l_args[1][0] == "{" and l_args[1][-1] == "}":
+                l_items = l_args[1][1:-1].split(", ")
+                # Validate items and launch update command
+                if all(": " in item for item in l_items):
+                    for item in l_items:
+                        attr, value = item.split(": ")
+                        args = "{} {} {} {}".format(class_name, obj_id, attr, value)
+                        HBNBCommand.do_update(self, args)
+                    return
+
+            # Simple input
+            if ", " not in l_args[1]:
+                args = "{} {} {}".format(class_name, obj_id, l_args[1])
+                HBNBCommand.do_update(self, args)
+                return
+
+            l_args_attr_val = l_args[1].split(", ")
+            args = "{} {} {} {}".format(class_name, obj_id, l_args_attr_val[0], l_args_attr_val[1])
+            HBNBCommand.do_update(self, args)
+
     def default(self, arg):
         """ Usage -> <class name>.action()
         Command interpreter retrieve all instances of class by using:
@@ -314,10 +349,8 @@ class HBNBCommand(cmd.Cmd):
         """
 
         if '.' in arg:
-
-            l_args = arg.split('.')
+            l_args = arg.split('.', 1)
             d_cls = HBNBCommand.__classes
-
             if l_args[1] == "all()":
                 HBNBCommand.do_all(self, l_args[0])
             elif l_args[1] == "count()":
@@ -328,6 +361,9 @@ class HBNBCommand(cmd.Cmd):
             elif l_args[1][:7] == "destroy":
                 args = get_arg(l_args[1])
                 HBNBCommand.do_destroy(self, l_args[0] + " " + args)
+            elif l_args[1][:6] == "update":
+                text_args = get_arg(l_args[1])
+                HBNBCommand.launch_update(self, l_args[0], text_args)
             else:
                 print("** class doesn't exist **")
         else:
