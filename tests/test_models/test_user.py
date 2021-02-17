@@ -11,7 +11,7 @@ from time import sleep
 import os
 
 
-class TestBaseModel_init(unittest.TestCase):
+class TestUser_init(unittest.TestCase):
     """Test instantiation of User class."""
 
     # Testing type
@@ -65,7 +65,7 @@ class TestBaseModel_init(unittest.TestCase):
         self.assertTrue(u_key in keys)
 
 
-class TestBaseModel_str(unittest.TestCase):
+class TestUser_str(unittest.TestCase):
     """Test __str__ method of User class"""
 
     def test_empty_input_str(self):
