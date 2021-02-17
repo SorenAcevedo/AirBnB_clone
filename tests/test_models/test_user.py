@@ -17,7 +17,7 @@ class TestBaseModel_init(unittest.TestCase):
     # Testing type
     def test_type(self):
         u = User()
-        self.assertEqual(User, type(b))
+        self.assertEqual(User, type(u))
 
     def test_type_id(self):
         u = User()
@@ -53,9 +53,9 @@ class TestBaseModel_init(unittest.TestCase):
     # Testing new attributes creation
     def test_new_attr(self):
         u = User()
-        u.first_name = "Holberton"
+        u.name = "Holberton"
         u.email = "ejemplo@gato.com"
-        self.assertTrue(hasattr(u, "name") and hasattr(u, "my_number"))
+        self.assertTrue(hasattr(u, "name") and hasattr(u, "email"))
 
     # Test update storage variable
     def test_bm_updated_storage(self):
