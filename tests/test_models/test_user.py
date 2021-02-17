@@ -97,33 +97,3 @@ class TestBaseModel_str(unittest.TestCase):
         real2 = eval(b_str[len_part1:])
         exp2 = b.__dict__
         self.assertEqual(exp2, real2)
-
-
-class TestBaseModel_save(unittest.TestCase):
-    """Test save method of BaseModel class"""
-
-    @classmethod
-    def clean(self):
-        """Remove 'file.json'"""
-        try:
-            os.remove("file.json")
-        except FileNotFoundError:
-            pass
-
-    def test_update_date(self):
-        b = BaseModel()
-        date1 = b.updated_at
-        sleep(0.02)
-        b.save()
-        date2 = b.updated_at
-        self.assertLess(date1, date2)
-
-    def test_save_update_file(self):
-        TestBaseModel_save.clean()
-        b = BaseModel()
-        b.save()
-        b_key = "BaseModel." + b.id
-        with open("file.json", "r") as file:
-            json_text = file.read()
-        self.assertTrue(b_key in json_text)
-        TestBaseModel_save.clean()
