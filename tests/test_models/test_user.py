@@ -11,13 +11,13 @@ from time import sleep
 import os
 
 
-class TestBaseModel_init(unittest.TestCase):
-    """Test instantiation of User class."""
+class TestUser_init(unittest.TestCase):
+    """Test instantiat  ion of User class."""
 
     # Testing type
     def test_type(self):
         u = User()
-        self.assertEqual(User, type(b))
+        self.assertEqual(User, type(u))
 
     def test_type_id(self):
         u = User()
@@ -55,7 +55,7 @@ class TestBaseModel_init(unittest.TestCase):
         u = User()
         u.first_name = "Holberton"
         u.email = "ejemplo@gato.com"
-        self.assertTrue(hasattr(u, "name") and hasattr(u, "my_number"))
+        self.assertTrue(hasattr(u, "email") and hasattr(u, "first_name"))
 
     # Test update storage variable
     def test_bm_updated_storage(self):
@@ -65,7 +65,7 @@ class TestBaseModel_init(unittest.TestCase):
         self.assertTrue(u_key in keys)
 
 
-class TestBaseModel_str(unittest.TestCase):
+class TestUser_str(unittest.TestCase):
     """Test __str__ method of User class"""
 
     def test_empty_input_str(self):
@@ -75,7 +75,7 @@ class TestBaseModel_str(unittest.TestCase):
         part1 = "[User] ("
         len_part1 = len(part1) + len(u.id) + 2
         real1 = u_str[: len_part1]
-        exp1 = part1 + b.id + ") "
+        exp1 = part1 + u.id + ") "
         self.assertEqual(exp1, real1)
 
         real2 = eval(u_str[len_part1:])
@@ -83,24 +83,24 @@ class TestBaseModel_str(unittest.TestCase):
         self.assertEqual(exp2, real2)
 
     def test_new_attr_str(self):
-        b = BaseModel()
-        b.name = "Holberton"
-        b.my_number = 89
-        b_str = str(b)
+        u = User()
+        u.name = "Holberton"
+        u.my_number = 89
+        u_str = str(u)
 
-        part1 = "[BaseModel] ("
-        len_part1 = len(part1) + len(b.id) + 2
-        real1 = b_str[: len_part1]
-        exp1 = part1 + b.id + ") "
+        part1 = "[User] ("
+        len_part1 = len(part1) + len(u.id) + 2
+        real1 = u_str[: len_part1]
+        exp1 = part1 + u.id + ") "
         self.assertEqual(exp1, real1)
 
-        real2 = eval(b_str[len_part1:])
-        exp2 = b.__dict__
+        real2 = eval(u_str[len_part1:])
+        exp2 = u.__dict__
         self.assertEqual(exp2, real2)
 
 
-class TestBaseModel_save(unittest.TestCase):
-    """Test save method of BaseModel class"""
+class TestUser_save(unittest.TestCase):
+    """Test save method of User class"""
 
     @classmethod
     def clean(self):
@@ -111,106 +111,106 @@ class TestBaseModel_save(unittest.TestCase):
             pass
 
     def test_update_date(self):
-        b = BaseModel()
-        date1 = b.updated_at
+        u = User()
+        date1 = u.updated_at
         sleep(0.02)
-        b.save()
-        date2 = b.updated_at
+        u.save()
+        date2 = u.updated_at
         self.assertLess(date1, date2)
 
     def test_save_update_file(self):
-        TestBaseModel_save.clean()
-        b = BaseModel()
-        b.save()
-        b_key = "BaseModel." + b.id
+        TestUser_save.clean()
+        u = User()
+        u.save()
+        u_key = "User." + u.id
         with open("file.json", "r") as file:
             json_text = file.read()
-        self.assertTrue(b_key in json_text)
-        TestBaseModel_save.clean()
+        self.assertTrue(u_key in json_text)
+        TestUser_save.clean()
 
 
-class TestBaseModel_to_dict(unittest.TestCase):
+class TestUser_to_dict(unittest.TestCase):
     """Test to_dict method of BaseModel class"""
 
     def test_class_item(self):
-        b = BaseModel()
-        b_dict = b.to_dict()
-        real = b_dict["__class__"]
-        exp = "BaseModel"
+        u = User()
+        u_dict = u.to_dict()
+        real = u_dict["__class__"]
+        exp = "User"
 
     def test_created_at_format(self):
-        b = BaseModel()
-        b.created_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119427)
-        b_dict = b.to_dict()
-        real = b_dict["created_at"]
+        u = User()
+        u.created_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119427)
+        u_dict = u.to_dict()
+        real = u_dict["created_at"]
         exp = "2017-09-28T21:05:54.119427"
         self.assertEqual(exp, real)
 
     def test_update_at_format(self):
-        b = BaseModel()
-        b.updated_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119572)
-        b_dict = b.to_dict()
-        real = b_dict["updated_at"]
+        u = User()
+        u.updated_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119572)
+        u_dict = u.to_dict()
+        real = u_dict["updated_at"]
         exp = "2017-09-28T21:05:54.119572"
         self.assertEqual(exp, real)
 
     def test_empty_input_format(self):
-        b = BaseModel()
-        b.created_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119427)
-        b.updated_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119572)
-        real = b.to_dict()
+        u = User()
+        u.created_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119427)
+        u.updated_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119572)
+        real = u.to_dict()
         exp = {
-            '__class__': 'BaseModel',
+            '__class__': 'User',
             'updated_at': '2017-09-28T21:05:54.119572',
             'id': 'b6a6e15c-c67d-4312-9a75-9d084935e579',
             'created_at': '2017-09-28T21:05:54.119427'}
 
     def test_new_attr_format(self):
-        b = BaseModel()
-        b.created_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119427)
-        b.updated_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119572)
-        b.name = "Holberton"
-        b.my_number = "89"
-        real = b.to_dict()
+        u = User()
+        u.created_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119427)
+        u.updated_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119572)
+        u.name = "Holberton"
+        u.my_number = "89"
+        real = u.to_dict()
         exp = {
             'my_number': 89,
             'name': 'Holberton',
-            '__class__': 'BaseModel',
+            '__class__': 'User',
             'updated_at': '2017-09-28T21:05:54.119572',
             'id': 'b6a6e15c-c67d-4312-9a75-9d084935e579',
             'created_at': '2017-09-28T21:05:54.119427'}
 
 
-class TestBaseModel_kwargs_input(unittest.TestCase):
+class TestUser_kwargs_input(unittest.TestCase):
     """Test kwargs inputs for __init__ inputs"""
 
     def test_correct_dict_input(self):
-        b1 = BaseModel()
-        b1.created_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119427)
-        b1.updated_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119572)
-        b1.name = "Holberton"
-        b1.my_number = "89"
-        b1_dict = b1.to_dict()
+        u1 = User()
+        u1.created_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119427)
+        u1.updated_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119572)
+        u1.name = "Holberton"
+        u1.my_number = "89"
+        u1_dict = u1.to_dict()
 
-        b2 = BaseModel(**b1_dict)
-        b2_dict = b2.to_dict()
+        u2 = User(**u1_dict)
+        u2_dict = u2.to_dict()
 
-        self.assertEqual(b1_dict, b2_dict)
-        self.assertEqual(datetime.datetime, type(b2.created_at))
-        self.assertFalse(b1 is b2)
+        self.assertEqual(u1_dict, u2_dict)
+        self.assertEqual(datetime.datetime, type(u2.created_at))
+        self.assertFalse(u1 is u2)
 
     def test_kwargs_all_inputs(self):
         c_date = '2017-09-28T21:05:54.119427'
         u_date = '2017-09-28T21:05:54.119572'
         id_val = "b6a6e15c-c67d-4312-9a75-9d084935e579"
-        b = BaseModel(
+        u = User(
             id=id_val,
             created_at=c_date,
             updated_at=u_date,
             name="Holberton")
-        real = b.to_dict()
+        real = u.to_dict()
         exp = {
-            '__class__': 'BaseModel',
+            '__class__': 'User',
             'updated_at': '2017-09-28T21:05:54.119572',
             'id': 'b6a6e15c-c67d-4312-9a75-9d084935e579',
             'created_at': '2017-09-28T21:05:54.119427',
@@ -220,28 +220,28 @@ class TestBaseModel_kwargs_input(unittest.TestCase):
     def test_kwargs_id_create_at(self):
         c_date = '2017-09-28T21:05:54.119427'
         id_val = "hola"
-        b = BaseModel(id=id_val, created_at=c_date)
-        b.updated_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119573)
-        real = b.to_dict()
+        u = User(id=id_val, created_at=c_date)
+        u.updated_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119573)
+        real = u.to_dict()
         exp = {
-            '__class__': 'BaseModel',
+            '__class__': 'User',
             'updated_at': '2017-09-28T21:05:54.119573',
             'id': 'hola',
             'created_at': '2017-09-28T21:05:54.119427'}
         self.assertEqual(exp, real)
 
     def test_args_input_unused(self):
-        b = BaseModel("element")
-        self.assertNotIn("element", b.__dict__.values())
+        u = User("element")
+        self.assertNotIn("element", u.__dict__.values())
 
     def test_args_kwargs_input(self):
         c_date = '2017-09-28T21:05:54.119427'
         u_date = '2017-09-28T21:05:54.119572'
         id_val = "b6a6e15c-c67d-4312-9a75-9d084935e579"
-        b = BaseModel(34, id=id_val, created_at=c_date, updated_at=u_date)
-        real = b.to_dict()
+        u = User(34, id=id_val, created_at=c_date, updated_at=u_date)
+        real = u.to_dict()
         exp = {
-            '__class__': 'BaseModel',
+            '__class__': 'User',
             'updated_at': '2017-09-28T21:05:54.119572',
             'id': 'b6a6e15c-c67d-4312-9a75-9d084935e579',
             'created_at': '2017-09-28T21:05:54.119427'}
