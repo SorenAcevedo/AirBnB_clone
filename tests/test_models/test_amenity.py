@@ -11,13 +11,17 @@ from time import sleep
 import os
 
 
-class TestBaseModel_init(unittest.TestCase):
+class TestAmenity(unittest.TestCase):
     """Test instantiation of Amenity class."""
 
     # Testing type
     def test_type(self):
         a = Amenity()
         self.assertEqual(Amenity, type(a))
+
+    def test_type_public_attr():
+        a = Amenity()
+        self.assertEqual(str, type(a.name))
 
     def test_type_id(self):
         a = Amenity()
@@ -63,37 +67,3 @@ class TestBaseModel_init(unittest.TestCase):
         a_key = "Amenity." + a.id
         keys = storage.all().keys()
         self.assertTrue(a_key in keys)
-
-
-class TestBaseModel_str(unittest.TestCase):
-    """Test __str__ method of Amenity class"""
-
-    def test_empty_input_str(self):
-        a = Amenity()
-        a_str = str(a)
-
-        part1 = "[Amenity] ("
-        len_part1 = len(part1) + len(a.id) + 2
-        real1 = a_str[: len_part1]
-        exp1 = part1 + a.id + ") "
-        self.assertEqual(exp1, real1)
-
-        real2 = eval(a_str[len_part1:])
-        exp2 = a.__dict__
-        self.assertEqual(exp2, real2)
-
-    def test_new_attr_str(self):
-        a = Amenity()
-        a.name = "Holberton"
-        a.my_number = 89
-        a_str = str(a)
-
-        part1 = "[Amenity] ("
-        len_part1 = len(part1) + len(a.id) + 2
-        real1 = a_str[: len_part1]
-        exp1 = part1 + a.id + ") "
-        self.assertEqual(exp1, real1)
-
-        real2 = eval(a_str[len_part1:])
-        exp2 = a.__dict__
-        self.assertEqual(exp2, real2)

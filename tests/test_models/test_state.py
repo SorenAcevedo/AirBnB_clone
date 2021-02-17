@@ -11,7 +11,7 @@ from time import sleep
 import os
 
 
-class TestBaseModel_init(unittest.TestCase):
+class TestState(unittest.TestCase):
     """Test instantiation of State class."""
 
     # Testing type
@@ -19,9 +19,10 @@ class TestBaseModel_init(unittest.TestCase):
         s = State()
         self.assertEqual(State, type(s))
 
-    def test_type_id(self):
+    def test_type_public_attr(self):
         s = State()
         self.assertEqual(str, type(s.id))
+        self.assertEqual(str, type(s.name))
 
     def test_type_created_at(self):
         s = State()
@@ -63,37 +64,3 @@ class TestBaseModel_init(unittest.TestCase):
         s_key = "State." + s.id
         keys = storage.all().keys()
         self.assertTrue(s_key in keys)
-
-
-class TestBaseModel_str(unittest.TestCase):
-    """Test __str__ method of State class"""
-
-    def test_empty_input_str(self):
-        s = State()
-        s_str = str(s)
-
-        part1 = "[State] ("
-        len_part1 = len(part1) + len(s.id) + 2
-        real1 = s_str[: len_part1]
-        exp1 = part1 + s.id + ") "
-        self.assertEqual(exp1, real1)
-
-        real2 = eval(s_str[len_part1:])
-        exp2 = s.__dict__
-        self.assertEqual(exp2, real2)
-
-    def test_new_attr_str(self):
-        s = State()
-        s.name = "Holberton"
-        s.my_number = 89
-        s_str = str(s)
-
-        part1 = "[State] ("
-        len_part1 = len(part1) + len(s.id) + 2
-        real1 = s_str[: len_part1]
-        exp1 = part1 + s.id + ") "
-        self.assertEqual(exp1, real1)
-
-        real2 = eval(s_str[len_part1:])
-        exp2 = s.__dict__
-        self.assertEqual(exp2, real2)

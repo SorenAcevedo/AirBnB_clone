@@ -11,7 +11,7 @@ from time import sleep
 import os
 
 
-class TestBaseModel_init(unittest.TestCase):
+class TestReview(unittest.TestCase):
     """Test instantiation of User class."""
 
     # Testing type
@@ -19,9 +19,12 @@ class TestBaseModel_init(unittest.TestCase):
         r = Review()
         self.assertEqual(Review, type(r))
 
-    def test_type_id(self):
+    def test_type_public_attr(self):
         r = Review()
         self.assertEqual(str, type(r.id))
+        self.assertEqual(str, type(r.place_id))
+        self.assertEqual(str, type(r.user_id))
+        self.assertEqual(str, type(r.text))
 
     def test_type_created_at(self):
         r = Review()
@@ -63,37 +66,3 @@ class TestBaseModel_init(unittest.TestCase):
         r_key = "Review." + r.id
         keys = storage.all().keys()
         self.assertTrue(r_key in keys)
-
-
-class TestBaseModel_str(unittest.TestCase):
-    """Test __str__ method of Review class"""
-
-    def test_empty_input_str(self):
-        r = Review()
-        r_str = str(r)
-
-        part1 = "[Review] ("
-        len_part1 = len(part1) + len(r.id) + 2
-        real1 = r_str[: len_part1]
-        exp1 = part1 + r.id + ") "
-        self.assertEqual(exp1, real1)
-
-        real2 = eval(r_str[len_part1:])
-        exp2 = r.__dict__
-        self.assertEqual(exp2, real2)
-
-    def test_new_attr_str(self):
-        r = Review()
-        r.name = "Holberton"
-        r.my_number = 89
-        r_str = str(r)
-
-        part1 = "[Review] ("
-        len_part1 = len(part1) + len(r.id) + 2
-        real1 = r_str[: len_part1]
-        exp1 = part1 + r.id + ") "
-        self.assertEqual(exp1, real1)
-
-        real2 = eval(r_str[len_part1:])
-        exp2 = r.__dict__
-        self.assertEqual(exp2, real2)

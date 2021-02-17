@@ -11,7 +11,7 @@ from time import sleep
 import os
 
 
-class TestBaseModel_init(unittest.TestCase):
+class TestCity(unittest.TestCase):
     """Test instantiation of City class."""
 
     # Testing type
@@ -19,9 +19,11 @@ class TestBaseModel_init(unittest.TestCase):
         c = City()
         self.assertEqual(City, type(c))
 
-    def test_type_id(self):
+    def test_type_public_attr(self):
         c = City()
         self.assertEqual(str, type(c.id))
+        self.assertEqual(str, type(c.state_id))
+        self.assertEqual(str, type(c.name))
 
     def test_type_created_at(self):
         c = City()
@@ -63,37 +65,3 @@ class TestBaseModel_init(unittest.TestCase):
         c_key = "City." + c.id
         keys = storage.all().keys()
         self.assertTrue(c_key in keys)
-
-
-class TestBaseModel_str(unittest.TestCase):
-    """Test __str__ method of City class"""
-
-    def test_empty_input_str(self):
-        c = City()
-        c_str = str(c)
-
-        part1 = "[City] ("
-        len_part1 = len(part1) + len(c.id) + 2
-        real1 = c_str[: len_part1]
-        exp1 = part1 + c.id + ") "
-        self.assertEqual(exp1, real1)
-
-        real2 = eval(c_str[len_part1:])
-        exp2 = c.__dict__
-        self.assertEqual(exp2, real2)
-
-    def test_new_attr_str(self):
-        c = City()
-        c.name = "Holberton"
-        c.my_number = 89
-        c_str = str(c)
-
-        part1 = "[City] ("
-        len_part1 = len(part1) + len(c.id) + 2
-        real1 = c_str[: len_part1]
-        exp1 = part1 + c.id + ") "
-        self.assertEqual(exp1, real1)
-
-        real2 = eval(c_str[len_part1:])
-        exp2 = c.__dict__
-        self.assertEqual(exp2, real2)

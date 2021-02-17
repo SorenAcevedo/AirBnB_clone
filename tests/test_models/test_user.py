@@ -63,8 +63,7 @@ class TestUsers(unittest.TestCase):
         u.name = "Holberton"
         u.my_number = "ejemplo@gato.com"
         self.assertTrue(hasattr(u, "name") and hasattr(u, "my_number"))
-
-    # Test update storage variable
+    
     def test_bm_updated_storage(self):
         u = User()
         u_key = "User." + u.id

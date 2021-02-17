@@ -11,7 +11,7 @@ from time import sleep
 import os
 
 
-class TestBaseModel_init(unittest.TestCase):
+class TestPlace(unittest.TestCase):
     """Test instantiation of Place class."""
 
     # Testing type
@@ -19,9 +19,20 @@ class TestBaseModel_init(unittest.TestCase):
         p = Place()
         self.assertEqual(Place, type(p))
 
-    def test_type_id(self):
+    def test_type_public_attr(self):
         p = Place()
         self.assertEqual(str, type(p.id))
+        self.assertEqual(str, type(p.city_id))
+        self.assertEqual(str, type(p.user_id))
+        self.assertEqual(str, type(p.name))
+        self.assertEqual(str, type(p.description))
+        self.assertEqual(int, type(p.number_rooms))
+        self.assertEqual(int, type(p.number_bathrooms))
+        self.assertEqual(int, type(p.max_guest))
+        self.assertEqual(int, type(p.price_by_night))
+        self.assertEqual(float, type(p.latitude))
+        self.assertEqual(float, type(p.longitude))
+        self.assertEqual(list, type(p.amenity_ids))
 
     def test_type_created_at(self):
         p = Place()
@@ -63,37 +74,3 @@ class TestBaseModel_init(unittest.TestCase):
         p_key = "Place." + p.id
         keys = storage.all().keys()
         self.assertTrue(p_key in keys)
-
-
-class TestBaseModel_str(unittest.TestCase):
-    """Test __str__ method of Place class"""
-
-    def test_empty_input_str(self):
-        p = Place()
-        p_str = str(p)
-
-        part1 = "[Place] ("
-        len_part1 = len(part1) + len(p.id) + 2
-        real1 = p_str[: len_part1]
-        exp1 = part1 + p.id + ") "
-        self.assertEqual(exp1, real1)
-
-        real2 = eval(p_str[len_part1:])
-        exp2 = p.__dict__
-        self.assertEqual(exp2, real2)
-
-    def test_new_attr_str(self):
-        p = Place()
-        p.name = "Holberton"
-        p.my_number = 89
-        p_str = str(p)
-
-        part1 = "[Place] ("
-        len_part1 = len(part1) + len(p.id) + 2
-        real1 = p_str[: len_part1]
-        exp1 = part1 + p.id + ") "
-        self.assertEqual(exp1, real1)
-
-        real2 = eval(p_str[len_part1:])
-        exp2 = p.__dict__
-        self.assertEqual(exp2, real2)
