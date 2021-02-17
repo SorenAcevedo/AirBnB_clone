@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Define unittests for BaseModel class (models/base_model.py)
+Define unittests for User class (models/user.py)
 """
 import unittest
 from models.base_model import BaseModel
@@ -11,7 +11,7 @@ from time import sleep
 import os
 
 
-class TestBaseModel_User_init(unittest.TestCase):
+class TestBaseModel_init(unittest.TestCase):
     """Test instantiation of User class."""
 
     # Testing type
@@ -65,7 +65,7 @@ class TestBaseModel_User_init(unittest.TestCase):
         self.assertTrue(u_key in keys)
 
 
-class TestBaseModel_User_str(unittest.TestCase):
+class TestBaseModel_str(unittest.TestCase):
     """Test __str__ method of User class"""
 
     def test_empty_input_str(self):
@@ -83,17 +83,17 @@ class TestBaseModel_User_str(unittest.TestCase):
         self.assertEqual(exp2, real2)
 
     def test_new_attr_str(self):
-        b = BaseModel()
-        b.name = "Holberton"
-        b.my_number = 89
-        b_str = str(b)
+        u = User()
+        u.name = "Holberton"
+        u.my_number = 89
+        u_str = str(u)
 
-        part1 = "[BaseModel] ("
-        len_part1 = len(part1) + len(b.id) + 2
-        real1 = b_str[: len_part1]
-        exp1 = part1 + b.id + ") "
+        part1 = "[User] ("
+        len_part1 = len(part1) + len(u.id) + 2
+        real1 = u_str[: len_part1]
+        exp1 = part1 + u.id + ") "
         self.assertEqual(exp1, real1)
 
-        real2 = eval(b_str[len_part1:])
-        exp2 = b.__dict__
+        real2 = eval(u_str[len_part1:])
+        exp2 = u.__dict__
         self.assertEqual(exp2, real2)
