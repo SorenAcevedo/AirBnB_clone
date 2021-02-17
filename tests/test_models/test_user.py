@@ -17,7 +17,7 @@ class TestBaseModel_init(unittest.TestCase):
     # Testing type
     def test_type(self):
         u = User()
-        self.assertEqual(User, type(b))
+        self.assertEqual(User, type(u))
 
     def test_type_id(self):
         u = User()
@@ -55,7 +55,7 @@ class TestBaseModel_init(unittest.TestCase):
         u = User()
         u.first_name = "Holberton"
         u.email = "ejemplo@gato.com"
-        self.assertTrue(hasattr(u, "name") and hasattr(u, "my_number"))
+        self.assertTrue(hasattr(u, "first_name") and hasattr(u, "email"))
 
     # Test update storage variable
     def test_bm_updated_storage(self):
@@ -75,7 +75,7 @@ class TestBaseModel_str(unittest.TestCase):
         part1 = "[User] ("
         len_part1 = len(part1) + len(u.id) + 2
         real1 = u_str[: len_part1]
-        exp1 = part1 + b.id + ") "
+        exp1 = part1 + u.id + ") "
         self.assertEqual(exp1, real1)
 
         real2 = eval(u_str[len_part1:])
